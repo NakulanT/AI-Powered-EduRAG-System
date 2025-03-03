@@ -1,0 +1,56 @@
+{
+  "set-1": {
+    "short": [
+      "How do you declare an array in Python?",
+      "What is a stack in data structures?",
+      "Explain the concept of a queue.",
+      "What is the difference between a linear and non-linear data structure?",
+      "What is the time complexity of searching in a binary search tree?"
+    ],
+    "medium": [
+      "How does a linked list differ from an array?",
+      "Explain the working of a hash table with an example."
+    ],
+    "long": [
+      "Describe different types of trees in data structures and their use cases.",
+      "How does the QuickSort algorithm work? Explain with an example.",
+      "What are the different types of linked lists, and how do they work?",
+      "Explain the concept of graph traversal and compare BFS and DFS.",
+      "What is dynamic programming, and how does it differ from recursion?"
+    ]
+  },
+  "set-2": {
+    "short": [
+      "What is the difference between an array and a linked list?",
+      "Define a circular queue.",
+      "What is a priority queue?",
+      "What is a doubly linked list?",
+      "What is the worst-case time complexity of binary search?"
+    ],
+    "medium": [
+      "Explain the difference between stack and queue with examples.",
+      "How do hash collisions occur, and how can they be handled?"
+    ],
+    "long": [
+      "Explain different types of sorting algorithms and compare their time complexities.",
+      "Describe the working of Merge Sort with an example.",
+      "What are the applications of different types of trees in computer science?",
+      "How does Dijkstra\u00e2\u20ac\u2122s algorithm work? Explain with an example.",
+      "What are the advantages and disadvantages of recursion in data structures?"
+    ]
+  },
+  "set-3": {
+    "short": [
+      "What is an array?",
+      "Describe the FIFO principle in the context of a queue."
+    ],
+    "medium": [
+      "Explain the difference between an array and a queue.",
+      "Describe the different types of queue implementation."
+    ],
+    "long": [
+      "Describe the advantages and disadvantages of implementing a queue using an array.",
+      "Explain how a queue data structure can be used in breadth-first search (BFS) algorithm."
+    ]
+  }
+}

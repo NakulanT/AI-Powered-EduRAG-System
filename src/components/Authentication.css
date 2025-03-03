@@ -1,0 +1,148 @@
+/* General Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  /* Background Styling */
+  .auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+    padding: 20px;
+    gap: 30px;
+  }
+  
+  /* Card Styling */
+  .auth-card {
+    width: 420px;  /* Increased size */
+    padding: 35px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Hover effect */
+  .auth-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Student & Teacher Different Colors */
+  .student-card {
+    border-top: 6px solid #3498db;
+  }
+  
+  .teacher-card {
+    border-top: 6px solid #e74c3c;
+  }
+  
+  /* Heading */
+  .auth-card h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Form Styling */
+  .auth-card form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .auth-card input {
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #f9f9f9;
+    color: #333;
+    outline: none;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .auth-card input::placeholder {
+    color: #aaa;
+  }
+  
+  /* Input Focus */
+  .auth-card input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+  }
+  
+  /* Button Styling */
+  .auth-card button {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .auth-card button:hover {
+    background: #2980b9;
+  }
+  
+  /* Teacher Button */
+  .teacher-card button {
+    background: #e74c3c;
+  }
+  
+  .teacher-card button:hover {
+    background: #c0392b;
+  }
+  
+  /* Switch Text */
+  .switch-text {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .switch-text span {
+    color: #3498db;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+  }
+  
+  .switch-text span:hover {
+    text-decoration: underline;
+    color: #2980b9;
+  }
+  
+  /* Teacher Switch Text */
+  .teacher-card .switch-text span {
+    color: #e74c3c;
+  }
+  
+  .teacher-card .switch-text span:hover {
+    color: #c0392b;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .auth-container {
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .auth-card {
+      width: 90%;
+    }
+  }  

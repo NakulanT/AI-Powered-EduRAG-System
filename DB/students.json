@@ -1,0 +1,65 @@
+[
+    {
+        "username": "nakult721@gmail.com",
+        "password": "Nec21ai029",
+        "viewed": [
+            {
+                "subject": "computer networks",
+                "sets": [
+                    "set-1"
+                ]
+            },
+            {
+                "subject": "data structres",
+                "sets": [
+                    "set-1",
+                    "set-2",
+                    "set-3"
+                ]
+            },
+            {
+                "subject": "oops",
+                "sets": [
+                    "set-1"
+                ]
+            },
+            {
+                "subject": "DSA",
+                "sets": [
+                    "set-1",
+                    "set-3",
+                    "set-4",
+                    "set-5",
+                    "set-2",
+                    "set-7"
+                ]
+            },
+            {
+                "subject": "DSa",
+                "sets": [
+                    "set-6"
+                ]
+            }
+        ]
+    },
+    {
+        "username": "nakula",
+        "password": "asedasd"
+    },
+    {
+        "username": "21ai028@nandhaengg.org",
+        "password": "Nec21ai028",
+        "viewed": [
+            {
+                "subject": "oops",
+                "sets": [
+                    "set-1"
+                ]
+            }
+        ]
+    },
+    {
+        "username": "21ai027@nandhaengg.org",
+        "password": "Nec21ai027"
+    }
+]

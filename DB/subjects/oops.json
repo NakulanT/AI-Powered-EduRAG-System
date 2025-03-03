@@ -1,0 +1,22 @@
+{
+    "set-1": {
+      "short": [
+        "How do you declare an array in Python?",
+        "What is a stack in data structures?",
+        "Explain the concept of a queue.",
+        "What is the difference between a linear and non-linear data structure?",
+        "What is the time complexity of searching in a binary search tree?"
+      ],
+      "medium": [
+        "How does a linked list differ from an array?",
+        "Explain the working of a hash table with an example."
+      ],
+      "long": [
+        "Describe different types of trees in data structures and their use cases.",
+        "How does the QuickSort algorithm work? Explain with an example.",
+        "What are the different types of linked lists, and how do they work?",
+        "Explain the concept of graph traversal and compare BFS and DFS.",
+        "What is dynamic programming, and how does it differ from recursion?"
+      ]
+    }
+  }  

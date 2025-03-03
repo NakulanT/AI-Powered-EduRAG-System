@@ -1,0 +1,94 @@
+{
+  "set-1": {
+    "short": [
+      "What is an array?",
+      "How do you insert an element into an array?",
+      "What is a queue?",
+      "What are the different types of queues?",
+      "What is a doubly linked list?",
+      "How does a doubly linked list differ from a singly linked list?",
+      "What is a heap?",
+      "What are the different types of heaps?",
+      "What is dynamic programming?",
+      "What is the time complexity of accessing an element in an array?"
+    ],
+    "medium": [
+      "Explain the difference between a stack and a queue.",
+      "Describe the advantages and disadvantages of using an array.",
+      "Explain how to implement a queue using an array.",
+      "Explain how to implement a queue using a linked list.",
+      "Describe the process of inserting a node into a doubly linked list.",
+      "Describe the process of deleting a node from a doubly linked list.",
+      "Explain the difference between a min-heap and a max-heap.",
+      "Explain how to insert an element into a heap.",
+      "What are the key characteristics of problems suitable for dynamic programming?",
+      "Explain the difference between memoization and tabulation in dynamic programming."
+    ],
+    "long": [
+      "Describe a real-world application of an array data structure.",
+      "Explain how to implement a circular queue using an array and its advantages.",
+      "Describe a scenario where a doubly linked list would be a more suitable data structure than a singly linked list, explaining the reasoning.",
+      "Explain how to build a heap from an unsorted array, detailing the steps and complexities involved.",
+      "Describe a real-world application of a heap data structure and its advantages.",
+      "Explain how dynamic programming can be used to solve the longest common subsequence problem.",
+      "Describe how dynamic programming can be used to solve the knapsack problem.",
+      "Discuss the trade-offs between space and time complexity when using dynamic programming approaches.",
+      "Compare and contrast different approaches to implementing a queue data structure.",
+      "Explain different ways to optimize dynamic programming solutions for better performance."
+    ]
+  },
+  "set-2": {
+    "short": [
+      "What is an array?"
+    ],
+    "medium": [
+      "Explain the difference between static and dynamic arrays."
+    ],
+    "long": [
+      "Describe different types of arrays and their use cases."
+    ]
+  },
+  "set-3": {
+    "short": [
+      "What is an array?"
+    ],
+    "medium": [],
+    "long": []
+  },
+  "set-4": {
+    "short": [
+      "What is an array?"
+    ],
+    "medium": [],
+    "long": []
+  },
+  "set-5": {
+    "short": [],
+    "medium": [],
+    "long": [
+      "Compare and contrast Arrays vs Queues data structures with the time complexity of common operations of these."
+    ]
+  },
+  "set-6": {
+    "short": [
+      "What is an array?"
+    ],
+    "medium": [
+      "How does dynamic array differ from a static array?"
+    ],
+    "long": [
+      "Explain the advantages and disadvantages of using arrays, and provide specific examples."
+    ]
+  },
+  "set-7": {
+    "short": [
+      "How do you declare an array in Java?",
+      "What is a queue?",
+      "What are some common operations performed on a queue?",
+      "Explain the concept of a linked list.",
+      "How do you insert a node at the beginning of a linked list?"
+    ],
+    "medium": [],
+    "long": []
+  }
+}

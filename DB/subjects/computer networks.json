@@ -1,0 +1,43 @@
+{
+    "set-1": {
+      "short": [
+        "What is a computer network?",
+        "What is the difference between a hub and a switch?",
+        "What is an IP address?",
+        "Define a MAC address.",
+        "What is the function of a router?"
+      ],
+      "medium": [
+        "Explain the difference between TCP and UDP.",
+        "What is subnetting, and why is it used?"
+      ],
+      "long": [
+        "Describe the OSI model and explain the function of each layer.",
+        "How does the TCP three-way handshake work?",
+        "Explain different types of network topologies with their advantages and disadvantages.",
+        "What are DNS and DHCP? Explain their roles in networking.",
+        "How does network congestion occur, and what are the methods to control it?"
+      ]
+    },
+    "set-2": {
+      "short": [
+        "What is the purpose of a firewall?",
+        "What is the difference between a public and a private IP address?",
+        "Define latency in networking.",
+        "What is a VLAN?",
+        "What is a proxy server?"
+      ],
+      "medium": [
+        "Explain the differences between IPv4 and IPv6.",
+        "What is NAT (Network Address Translation), and how does it work?"
+      ],
+      "long": [
+        "Describe different types of network protocols and their applications.",
+        "How does SSL/TLS encryption work in secure communications?",
+        "What are the advantages and disadvantages of wireless networks?",
+        "Explain the concept of packet switching and circuit switching.",
+        "How does load balancing improve network performance?"
+      ]
+    }
+  }
+  
