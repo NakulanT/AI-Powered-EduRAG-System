@@ -1,0 +1,17 @@
+{
+  "set-1": {
+    "short": [
+      "What is a CNN?",
+      "What is the purpose of a convolutional layer in a CNN?",
+      "What is an RNN?",
+      "What is the vanishing gradient problem in RNNs?",
+      "What is an LSTM?"
+    ],
+    "medium": [
+      "Explain the difference between an RNN and an LSTM."
+    ],
+    "long": [
+      "Describe the architecture of a CNN and explain how it can be used for image classification."
+    ]
+  }
+}

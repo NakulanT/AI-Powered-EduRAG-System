@@ -6,6 +6,7 @@ import json
 
 class API:
     def generate(self,json_input):
+        print("Generating questions...")
         client = genai.Client(
             api_key= "AIzaSyAGxVGv47iftk59wxDTDEzxrJtT_ChTOoc" ,
         )

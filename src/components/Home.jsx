@@ -7,51 +7,68 @@ import StudentNav from "./StudentNav";
 function Home() {
   const navigate = useNavigate();
 
-  const username = localStorage.getItem("username");
+  // Use email instead of username
+  const email = localStorage.getItem("email");
   const role = localStorage.getItem("role");
 
   const [subjects, setSubjects] = useState([]);
 
-  // Redirect to "/" if username or role is missing
+  // Debug: Log email and role to confirm their values
   useEffect(() => {
-    if (!username || !role) {
+    console.log("Home component rendered");
+    console.log("Email from localStorage:", email);
+    console.log("Role from localStorage:", role);
+
+    // Redirect to "/" if email or role is missing
+    if (!email || !role) {
+      console.log("Email or role missing, redirecting to /");
       navigate("/");
     }
-  }, [username, role, navigate]);
+  }, [email, role, navigate]);
 
   // Fetch subjects only if the user is authenticated
   useEffect(() => {
-    if (username && role) {
-      axios.get("http://localhost:5000/subjects")
-        .then(response => setSubjects(response.data))
-        .catch(error => console.error("Error fetching subjects:", error));
+    if (email && role) {
+      console.log("Fetching subjects...");
+      axios
+        .get("http://localhost:5000/subjects")
+        .then((response) => {
+          console.log("Subjects fetched:", response.data);
+          setSubjects(response.data);
+        })
+        .catch((error) => console.error("Error fetching subjects:", error));
     }
-  }, [username, role]);
+  }, [email, role]);
 
-  // Colors for subject cards
-  const colors = [
-    "linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%)", // Red-Orange
-    "linear-gradient(135deg, #6B73FF 0%, #000DFF 100%)", // Blue
-    "linear-gradient(135deg, #00C9FF 0%, #92FE9D 100%)", // Aqua-Green
-    "linear-gradient(135deg, #F7971E 0%, #FFD200 100%)", // Yellow-Orange
-    "linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%)", // Purple
-  ];
+  // Colors for subject cards based on role
+  const teacherColor = "#e74c3c"; // Red from StaffNav
+  const studentColor = "#3498db"; // Blue from StudentNav
+
+  // Select color based on role
+  const cardColor = role === "teacher" ? teacherColor : studentColor;
 
   return (
-    <div>
-      {role === "teacher" ? <StaffNav username={username} /> : <StudentNav username={username} />}
+    <div style={styles.container}>
+      {role === "teacher" ? <StaffNav username={email} /> : <StudentNav username={email} />}
       <h2 style={styles.title}>📚 Available Subjects</h2>
 
       {/* Subjects Grid */}
       <div style={styles.gridContainer}>
-        {Object.entries(subjects).map(([subjectName, sets], index) => (
-          <div 
-            key={subjectName} 
-            style={{ ...styles.card, background: colors[index % colors.length] }} 
-            onClick={() => navigate(`/subjects/${subjectName}`)}
+        {Object.entries(subjects).map(([subjectName, sets]) => (
+          <div
+            key={subjectName}
+            style={{ ...styles.card, background: cardColor }}
+            onClick={() => {
+              console.log(`Navigating to /subjects/${subjectName}`);
+              navigate(`/subjects/${subjectName}`);
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-5px)")}
+            onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
           >
-            <h2>{subjectName}</h2>
-            <p><strong>Total Sets:</strong> {Object.keys(sets).length}</p>
+            <h2 style={styles.cardTitle}>{subjectName}</h2>
+            <p style={styles.cardText}>
+              <strong>Total Sets:</strong> {Object.keys(sets).length}
+            </p>
           </div>
         ))}
       </div>
@@ -60,27 +77,57 @@ function Home() {
 }
 
 const styles = {
+  container: {
+    minHeight: "100vh",
+    background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+  },
   title: {
     textAlign: "center",
-    marginTop: "30px",
-    fontSize: "24px",
-    fontWeight: "bold",
+    marginTop: "40px",
+    fontSize: "28px",
+    fontWeight: "700",
     color: "#333",
+    textShadow: "1px 1px 2px rgba(0,0,0,0.1)",
+    paddingBottom: "20px",
   },
   gridContainer: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-    gap: "20px",
-    padding: "30px",
+    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", // Allow columns to grow
+    gap: "30px", // Increased gap for better spacing
+    padding: "20px", // Reduced padding to avoid overflow
+    justifyContent: "center",
+    maxWidth: "1200px", // Limit max width for larger screens
+    margin: "0 auto", // Center the grid
   },
   card: {
+    height: "160px",
     color: "white",
-    padding: "20px",
-    borderRadius: "15px",
+    padding: "25px",
+    borderRadius: "20px",
     textAlign: "center",
     cursor: "pointer",
-    boxShadow: "5px 5px 15px rgba(0,0,0,0.2)",
+    boxShadow: "0 8px 25px rgba(0,0,0,0.2)",
     transition: "transform 0.3s ease, box-shadow 0.3s ease",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    border: "2px solid rgba(255,255,255,0.3)",
+    overflow: "hidden",
+    position: "relative",
+  },
+  cardTitle: {
+    fontSize: "24px",
+    fontWeight: "600",
+    margin: "0",
+    textTransform: "capitalize",
+    textShadow: "1px 1px 2px rgba(0,0,0,0.3)",
+  },
+  cardText: {
+    fontSize: "16px",
+    margin: "10px 0 0",
+    fontWeight: "500",
+    textShadow: "1px 1px 2px rgba(0,0,0,0.2)",
   },
 };
 

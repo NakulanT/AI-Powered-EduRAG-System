@@ -1,24 +1,47 @@
 from flask import Flask, request, jsonify
-import json, os
+import json
+import os
 from flask_cors import CORS
-from google import genai
+from flask_bcrypt import Bcrypt  # Added for password hashing
+from Rag import store_dataset, retrieve_chunks
+from ollama_model import generate_answer
+import traceback
+import logging
+from waitress import serve
 from api import API
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
+bcrypt = Bcrypt(app)  # Initialize Bcrypt for password hashing
 
 if not os.path.exists("DB"):
     os.makedirs("DB")
+
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 STUDENTS_FILE = "DB/students.json"
 STAFFS_FILE = "DB/staffs.json"
 SUBJECTS_DIR = "DB/subjects"
 
-# Helper function to read JSON print
+# Initialize files if they don’t exist
+if not os.path.exists(STUDENTS_FILE):
+    with open(STUDENTS_FILE, "w") as f:
+        json.dump([], f)
+if not os.path.exists(STAFFS_FILE):
+    with open(STAFFS_FILE, "w") as f:
+        json.dump([], f)
+
+# Helper function to read JSON
 def read_json(file):
-    if os.path.exists(file):
+    if os.path.exists(file) and os.path.getsize(file) > 0:
         with open(file, "r") as f:
-            return json.load(f)
+            try:
+                return json.load(f)
+            except json.JSONDecodeError:
+                logger.error(f"Invalid JSON in {file}, initializing as empty list")
+                return []
     return []
 
 # Helper function to write JSON
@@ -26,6 +49,51 @@ def write_json(file, data):
     with open(file, "w") as f:
         json.dump(data, f, indent=4)
 
+@app.route('/store', methods=['POST'])
+def store():
+    logger.debug("Received /store request")
+    try:
+        data = request.json
+        if not data or 'text' not in data:
+            logger.error("No text provided in request")
+            return jsonify({"error": "No text provided"}), 400
+        
+        raw_text = data['text']
+        logger.debug(f"Processing text: {raw_text[:100]}...")
+        chunks = store_dataset(raw_text)
+        logger.debug("Chunk storage completed, sending response")
+        response = jsonify({"message": "success", "stored_chunks": len(chunks)})
+        logger.debug("Response prepared")
+        return response, 200
+    except Exception as e:
+        logger.error(f"Error in /store: {e}")
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/query', methods=['POST'])
+def query():
+    logger.debug("Received /query request")
+    try:
+        data = request.json
+        if not data or 'query' not in data:
+            logger.error("No query provided in request")
+            return jsonify({"error": "No query provided"}), 400
+        
+        query_text = data['query']
+        logger.debug(f"Retrieving chunks for query: {query_text}")
+        chunks = retrieve_chunks(query_text, top_k=3)
+        logger.debug("Chunks retrieved, generating answer")
+        answer = generate_answer(query_text, top_k=3)
+        logger.debug("Answer generated, preparing response")
+        response = jsonify({
+            "answer": answer
+        })
+        logger.debug("Response prepared")
+        return response, 200
+    except Exception as e:
+        logger.error(f"Error in /query: {e}")
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/subjects", methods=["GET"])
 def get_subjects():
@@ -49,12 +117,25 @@ def register_student():
     data = request.json
     students = read_json(STUDENTS_FILE)
     
-    # Check if user exists
+    # Check if email exists
     for student in students:
-        if student["username"] == data["username"]:
-            return jsonify({"error": "Student already exists!"}), 400
+        if student["email"] == data["email"]:
+            return jsonify({"error": "Student with this email already exists!"}), 400
 
-    students.append(data)
+    # Ensure required fields are present
+    required_fields = ["firstName", "lastName", "email", "password", "dept", "year"]
+    if not all(field in data for field in required_fields):
+        return jsonify({"error": "Missing required fields"}), 400
+
+    students.append({
+        "firstName": data["firstName"],
+        "lastName": data["lastName"],
+        "email": data["email"],
+        "password": bcrypt.generate_password_hash(data["password"]).decode('utf-8'),  # Hash the password
+        "dept": data["dept"],
+        "year": data["year"],
+        "viewed": []  # Initialize viewed sets
+    })
     write_json(STUDENTS_FILE, students)
     return jsonify({"message": "Student registered successfully!"})
 
@@ -64,12 +145,24 @@ def register_teacher():
     data = request.json
     teachers = read_json(STAFFS_FILE)
     
-    # Check if user exists
+    # Check if email exists
     for teacher in teachers:
-        if teacher["username"] == data["username"]:
-            return jsonify({"error": "Teacher already exists!"}), 400
+        if teacher["email"] == data["email"]:
+            return jsonify({"error": "Teacher with this email already exists!"}), 400
 
-    teachers.append(data)
+    # Ensure required fields are present
+    required_fields = ["firstName", "lastName", "email", "password", "dept", "position"]
+    if not all(field in data for field in required_fields):
+        return jsonify({"error": "Missing required fields"}), 400
+
+    teachers.append({
+        "firstName": data["firstName"],
+        "lastName": data["lastName"],
+        "email": data["email"],
+        "password": bcrypt.generate_password_hash(data["password"]).decode('utf-8'),  # Hash the password
+        "dept": data["dept"],
+        "position": data["position"]
+    })
     write_json(STAFFS_FILE, teachers)
     return jsonify({"message": "Teacher registered successfully!"})
 
@@ -80,10 +173,10 @@ def login_student():
     students = read_json(STUDENTS_FILE)
 
     for student in students:
-        if student["username"] == data["username"] and student["password"] == data["password"]:
+        if student["email"] == data["email"] and bcrypt.check_password_hash(student["password"], data["password"]):
             return jsonify({"message": "Student login successful!"})
 
-    return jsonify({"error": "Invalid credentials!"}), 401
+    return jsonify({"error": "Invalid email or password!"}), 401
 
 # Login Teacher
 @app.route("/login/teacher", methods=["POST"])
@@ -92,10 +185,10 @@ def login_teacher():
     teachers = read_json(STAFFS_FILE)
 
     for teacher in teachers:
-        if teacher["username"] == data["username"] and teacher["password"] == data["password"]:
+        if teacher["email"] == data["email"] and bcrypt.check_password_hash(teacher["password"], data["password"]):
             return jsonify({"message": "Teacher login successful!"})
 
-    return jsonify({"error": "Invalid credentials!"}), 401
+    return jsonify({"error": "Invalid email or password!"}), 401
 
 @app.route("/subjects/<subject_name>", methods=["GET"])
 def get_subject(subject_name):
@@ -120,20 +213,20 @@ def get_questions(subject_name, set_name):
     if set_name not in subject_data:
         return jsonify({"error": "Set not found"}), 404
 
-    # Get username from headers
-    username = request.headers.get("Username")
-    if username:
-        track_viewed_set(username, subject_name, set_name)
+    # Get email from headers
+    email = request.headers.get("Email")
+    if email:
+        track_viewed_set(email, subject_name, set_name)
 
     return jsonify(subject_data[set_name])
 
-def track_viewed_set(username, subject_name, set_name):
+def track_viewed_set(email, subject_name, set_name):
     """Tracks viewed question sets in students.json"""
     students_data = read_json(STUDENTS_FILE)
 
     # Find the user in students.json
     for student in students_data:
-        if student.get("username") == username:
+        if student.get("email") == email:
             if "viewed" not in student:
                 student["viewed"] = []  # Create viewed key if not present
 
@@ -153,7 +246,7 @@ def track_viewed_set(username, subject_name, set_name):
 
     # If user not found, create a new entry
     students_data.append({
-        "username": username,
+        "email": email,
         "viewed": [{"subject": subject_name, "sets": [set_name]}]
     })
     write_json(STUDENTS_FILE, students_data)
@@ -165,7 +258,7 @@ def get_viewed_students():
     subject_view_data = {}
 
     for student in students_data:
-        username = student.get("username")
+        email = student.get("email")
         viewed = student.get("viewed", [])
 
         for subject in viewed:
@@ -176,7 +269,7 @@ def get_viewed_students():
                 subject_view_data[subject_name] = []
 
             subject_view_data[subject_name].append({
-                "username": username,
+                "email": email,
                 "viewed_sets": viewed_sets
             })
 
@@ -225,7 +318,5 @@ def create_question():
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
-
 if __name__ == "__main__":
-    # create_question("Computer Networks", ["TCP/IP Model", "Routing", "Security"], 5, 3, 4)
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)

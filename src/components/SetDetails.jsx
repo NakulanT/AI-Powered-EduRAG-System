@@ -9,19 +9,19 @@ function SetDetails() {
   const { subjectName, setName } = useParams();
   const [questions, setQuestions] = useState(null);
   const [loading, setLoading] = useState(true);
-  const username = localStorage.getItem("username");
+  const email = localStorage.getItem("email");
   const role = localStorage.getItem("role");
 
   useEffect(() => {
-    if (!username) {
-      console.error("Username not found. Please log in.");
+    if (!email) {
+      console.error("Email not found. Please log in.");
       return;
     }
 
     axios
       .get(`http://localhost:5000/subjects/${subjectName}/${setName}`, {
         headers: {
-          Username: username, // Send username in headers
+          Email: email, // Send username in headers
         },
       })
       .then((response) => {
@@ -32,14 +32,14 @@ function SetDetails() {
         console.error("Error fetching questions:", error);
         setLoading(false);
       });
-  }, [subjectName, setName, username]);
+  }, [subjectName, setName, email]);
 
   if (loading) return <h2 className="loading">Loading...</h2>;
   if (!questions) return <h2 className="not-found">Questions not found.</h2>;
 
   return (
     <div>  
-    {role === "teacher" ? <StaffNav username={username} /> : <StudentNav username={username} />}
+    {role === "teacher" ? <StaffNav username={email} /> : <StudentNav username={email} />}
     <div className="set-container">
       <h1 className="set-title">{setName} - {subjectName}</h1>
 

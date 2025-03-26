@@ -11,6 +11,8 @@
 # production
 /build
 
+/students_env
+
 # misc
 .DS_Store
 .env.local

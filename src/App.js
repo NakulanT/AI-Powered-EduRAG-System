@@ -7,6 +7,8 @@ import SubjectDetails from "./components/SubjectDetails";
 import SetDetails from "./components/SetDetails";
 import StudentsView from "./components/StudentsView";
 import CreateQuestions from "./components/CreateQuestions";
+import DataStore from "./components/DataStore";
+import AnswerRetrieval from "./components/AnswerRetrieval";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/subjects/:subjectName/:setName" element={<SetDetails />} />
         <Route path="/students/viewed" element={<StudentsView />} />
         <Route path="/create-questions" element={<CreateQuestions />} /> 
+        <Route path="/data-store" element={<DataStore />} />
+        <Route path="/answer-retrieval" element={<AnswerRetrieval />} />
       </Routes>
     </Router>
   );

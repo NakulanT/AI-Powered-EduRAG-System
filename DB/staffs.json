@@ -1,18 +1,10 @@
 [
     {
-        "username": "nakult721@gmail.com",
-        "password": "Nec21ai029"
-    },
-    {
-        "username": "a",
-        "password": "a"
-    },
-    {
-        "username": "aa",
-        "password": "aa"
-    },
-    {
-        "username": "aaa",
-        "password": "aa"
+        "firstName": "Nakulan",
+        "lastName": "T",
+        "email": "nakult721@gmail.com",
+        "password": "$2b$12$tefca7wg0.74rrcjJ5.mWen8srV9HPCaBXRZ0ngLpv8PqQggzOFvm",
+        "dept": "Artificial Intelligence and Data Science",
+        "position": "HoD"
     }
 ]
