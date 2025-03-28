@@ -122,7 +122,7 @@ curl -X POST http://localhost:5000/query -H "Content-Type: application/json" -d 
 3. **Answer Generation**: Retrieved chunks are fed into DeepSeek 1.5B via Ollama to generate concise answers.
 ![Alt text](RAG%20flowchart.png)
 4. **Question Creation**: Gemini 2.0 generates question sets based on provided topics and answer lengths.
-![Alt text](created-questions.png)
+![Alt text](created-question.png)
 5. **User Interaction**: The React frontend communicates with the Flask backend to display content and handle user actions.
 ![Alt text](home.png)
 
