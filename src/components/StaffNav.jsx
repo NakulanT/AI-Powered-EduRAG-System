@@ -1,121 +1,48 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaBook, FaUsers, FaUserTie, FaSignOutAlt, FaPlus, FaDatabase, FaQuestion } from "react-icons/fa";
+import "./StaffNav.css";
 
-function StaffNav({ username }) { // username prop is actually email
+function StaffNav({ username }) {
   const navigate = useNavigate();
+  const name = localStorage.getItem("name");
 
   const handleLogout = () => {
     console.log("Logging out staff:", username);
-    localStorage.removeItem("email"); // Changed from username to email
+    localStorage.removeItem("email");
     localStorage.removeItem("role");
+    localStorage.removeItem("name");
     navigate("/"); // Redirect to login page after logout
   };
 
   return (
-    <nav style={styles.navbar}>
-      <h2 style={styles.username}>
-        <FaUserTie style={styles.icon} /> {username}
+    <nav className="staff-nav">
+      <h2 className="staff-nav-username">
+        <FaUserTie className="staff-nav-icon" /> {name} - {username}
       </h2>
-      <div style={styles.links}>
-        <Link to="/Home" style={styles.link}>
-          <FaBook style={styles.icon} /> Subjects
+      <div className="staff-nav-links">
+        <Link to="/Home" className="staff-nav-link">
+          <FaBook className="staff-nav-icon" /> Subjects
         </Link>
-        <Link to="/students/viewed" style={styles.link}>
-          <FaUsers style={styles.icon} /> Students
+        <Link to="/students/viewed" className="staff-nav-link">
+          <FaUsers className="staff-nav-icon" /> Students
         </Link>
-        <Link to="/create-questions" style={styles.create}>
-          <FaPlus style={styles.icon} /> Create
+        <Link to="/create-questions" className="staff-nav-create">
+          <FaPlus className="staff-nav-icon" /> Create
         </Link>
-        <Link to="/data-store" style={styles.link}>
-          <FaDatabase style={styles.icon} /> Data Store
+        <Link to="/data-store" className="staff-nav-link">
+          <FaDatabase className="staff-nav-icon" /> Data Store
         </Link>
-        <Link to="/answer-retrieval" style={styles.link}>
-          <FaQuestion style={styles.icon} /> Ask Question
+        <Link to="/answer-retrieval" className="staff-nav-link">
+          <FaQuestion className="staff-nav-icon" /> Ask Question
         </Link>
-        <button onClick={handleLogout} style={styles.logout}>
-          <FaSignOutAlt style={styles.icon} /> Logout
+        <button onClick={handleLogout} className="staff-nav-logout">
+          <FaSignOutAlt className="staff-nav-icon" /> Logout
         </button>
       </div>
     </nav>
   );
 }
-
-const styles = {
-  navbar: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "10px 30px",
-    backgroundColor: "#e74c3c", // Red background for teachers
-    borderBottom: "2px solid #ffffff",
-    fontFamily: "'Poppins', sans-serif",
-    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
-  },
-  username: {
-    fontSize: "18px",
-    fontWeight: "500",
-    color: "#ffffff",
-    display: "flex",
-    alignItems: "center",
-    gap: "5px",
-    margin: "0",
-  },
-  links: {
-    display: "flex",
-    gap: "20px",
-  },
-  link: {
-    textDecoration: "none",
-    fontSize: "14px",
-    fontWeight: "500",
-    color: "#ffffff",
-    display: "flex",
-    alignItems: "center",
-    gap: "5px",
-    transition: "color 0.3s, transform 0.2s", // Added transform transition
-  },
-  linkHover: {
-    color: "#ffd1d1", // Lighter red on hover
-    transform: "scale(1.05)", // Slight scale effect on hover
-  },
-  create: {
-    background: "none",
-    border: "none",
-    fontSize: "14px",
-    fontWeight: "500",
-    color: "#ffffff",
-    display: "flex",
-    alignItems: "center",
-    gap: "5px",
-    cursor: "pointer",
-    transition: "color 0.3s, transform 0.2s", // Added transform transition
-    textDecoration: "none",
-  },
-  createHover: {
-    color: "#ffd1d1", // Lighter red on hover
-    transform: "scale(1.05)", // Slight scale effect on hover
-  },
-  logout: {
-    background: "none",
-    border: "none",
-    fontSize: "14px",
-    fontWeight: "500",
-    color: "#ffffff",
-    display: "flex",
-    alignItems: "center",
-    gap: "5px",
-    cursor: "pointer",
-    transition: "color 0.3s, transform 0.2s", // Added transform transition
-  },
-  logoutHover: {
-    color: "#ffd1d1", // Lighter red on hover
-    transform: "scale(1.05)", // Slight scale effect on hover
-  },
-  icon: {
-    fontSize: "16px",
-  },
-};
 
 // Add hover effects using onMouseEnter and onMouseLeave
 const StaffNavWithHover = (props) => {
@@ -124,18 +51,15 @@ const StaffNavWithHover = (props) => {
   return (
     <StaffNav
       {...props}
-      linkStyle={(index) => ({
-        ...styles.link,
-        ...(hoveredLink === index ? styles.linkHover : {}),
-      })}
-      createStyle={{
-        ...styles.create,
-        ...(hoveredLink === "create" ? styles.createHover : {}),
-      }}
-      logoutStyle={{
-        ...styles.logout,
-        ...(hoveredLink === "logout" ? styles.logoutHover : {}),
-      }}
+      linkClass={(index) =>
+        `staff-nav-link ${hoveredLink === index ? "staff-nav-link-hover" : ""}`
+      }
+      createClass={`staff-nav-create ${
+        hoveredLink === "create" ? "staff-nav-create-hover" : ""
+      }`}
+      logoutClass={`staff-nav-logout ${
+        hoveredLink === "logout" ? "staff-nav-logout-hover" : ""
+      }`}
       onLinkHover={(index) => setHoveredLink(index)}
       onLinkLeave={() => setHoveredLink(null)}
     />
@@ -143,65 +67,65 @@ const StaffNavWithHover = (props) => {
 };
 
 const StaffNavFinal = (props) => {
-  const linkStyle = props.linkStyle || (() => styles.link);
-  const createStyle = props.createStyle || styles.create;
-  const logoutStyle = props.logoutStyle || styles.logout;
+  const linkClass = props.linkClass || (() => "staff-nav-link");
+  const createClass = props.createClass || "staff-nav-create";
+  const logoutClass = props.logoutClass || "staff-nav-logout";
   const onLinkHover = props.onLinkHover || (() => {});
   const onLinkLeave = props.onLinkLeave || (() => {});
 
   return (
-    <nav style={styles.navbar}>
-      <h2 style={styles.username}>
-        <FaUserTie style={styles.icon} /> {props.username}
+    <nav className="staff-nav">
+      <h2 className="staff-nav-username">
+        <FaUserTie className="staff-nav-icon" /> {props.username}
       </h2>
-      <div style={styles.links}>
+      <div className="staff-nav-links">
         <Link
           to="/Home"
-          style={linkStyle(0)}
+          className={linkClass(0)}
           onMouseEnter={() => onLinkHover(0)}
           onMouseLeave={onLinkLeave}
         >
-          <FaBook style={styles.icon} /> Subjects
+          <FaBook className="staff-nav-icon" /> Subjects
         </Link>
         <Link
           to="/students/viewed"
-          style={linkStyle(1)}
+          className={linkClass(1)}
           onMouseEnter={() => onLinkHover(1)}
           onMouseLeave={onLinkLeave}
         >
-          <FaUsers style={styles.icon} /> Students
+          <FaUsers className="staff-nav-icon" /> Students
         </Link>
         <Link
           to="/create-questions"
-          style={createStyle}
+          className={createClass}
           onMouseEnter={() => onLinkHover("create")}
           onMouseLeave={onLinkLeave}
         >
-          <FaPlus style={styles.icon} /> Create
+          <FaPlus className="staff-nav-icon" /> Create
         </Link>
         <Link
           to="/data-store"
-          style={linkStyle(2)}
+          className={linkClass(2)}
           onMouseEnter={() => onLinkHover(2)}
           onMouseLeave={onLinkLeave}
         >
-          <FaDatabase style={styles.icon} /> Data Store
+          <FaDatabase className="staff-nav-icon" /> Data Store
         </Link>
         <Link
           to="/answer-retrieval"
-          style={linkStyle(3)}
+          className={linkClass(3)}
           onMouseEnter={() => onLinkHover(3)}
           onMouseLeave={onLinkLeave}
         >
-          <FaQuestion style={styles.icon} /> Ask Question
+          <FaQuestion className="staff-nav-icon" /> Ask Question
         </Link>
         <button
           onClick={props.handleLogout}
-          style={logoutStyle}
+          className={logoutClass}
           onMouseEnter={() => onLinkHover("logout")}
           onMouseLeave={onLinkLeave}
         >
-          <FaSignOutAlt style={styles.icon} /> Logout
+          <FaSignOutAlt className="staff-nav-icon" /> Logout
         </button>
       </div>
     </nav>
@@ -213,6 +137,7 @@ StaffNavFinal.defaultProps = {
     console.log("Logging out staff:", StaffNavFinal.defaultProps.username);
     localStorage.removeItem("email");
     localStorage.removeItem("role");
+    localStorage.removeItem("name");
     window.location.href = "/"; // Fallback navigation
   },
 };

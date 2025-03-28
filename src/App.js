@@ -9,6 +9,7 @@ import StudentsView from "./components/StudentsView";
 import CreateQuestions from "./components/CreateQuestions";
 import DataStore from "./components/DataStore";
 import AnswerRetrieval from "./components/AnswerRetrieval";
+import Saved from "./components/Saved";
 
 function App() {
   return (
@@ -21,7 +22,9 @@ function App() {
         <Route path="/students/viewed" element={<StudentsView />} />
         <Route path="/create-questions" element={<CreateQuestions />} /> 
         <Route path="/data-store" element={<DataStore />} />
+        <Route path="/saved" element={<Saved />} />
         <Route path="/answer-retrieval" element={<AnswerRetrieval />} />
+        
       </Routes>
     </Router>
   );

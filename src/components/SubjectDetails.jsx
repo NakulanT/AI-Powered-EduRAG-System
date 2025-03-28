@@ -43,39 +43,54 @@ function SubjectDetails() {
       });
   }, [subjectName]);
 
-  // Colors for cards based on role
+  // Colors for cards and title based on role
   const teacherColor = "#e74c3c"; // Red for teachers (matches StaffNav)
   const studentColor = "#3498db"; // Blue for students (matches StudentNav)
-  const cardColor = role === "teacher" ? teacherColor : studentColor;
+  const headingColor = role === "teacher" ? teacherColor : studentColor;
 
-  if (loading) return <h2 className="loading">Loading...</h2>;
-  if (!subject) return <h2 className="not-found">Subject not found.</h2>;
+  if (loading) return <h2 className="loading">🔄 Loading...</h2>;
+  if (!subject) return <h2 className="not-found">❌ Subject not found.</h2>;
 
   return (
     <div>
       {role === "teacher" ? <StaffNav username={email} /> : <StudentNav username={email} />}
       <div className="subject-container">
-        <h1 className="subject-title">{subjectName.toUpperCase()}</h1>
+        <h1
+          className="subject-title"
+          style={{
+            background: `linear-gradient(90deg, ${headingColor}, ${
+              role === "teacher" ? "#c0392b" : "#2980b9"
+            })`,
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          {subjectName.toUpperCase()}
+        </h1>
 
         <div className="grid-container">
           {Object.entries(subject).map(([setName, setData]) => (
             <div
               key={setName}
               className="set-card"
-              style={{ background: cardColor }} // Use role-based color
+              style={{
+                background: `linear-gradient(135deg, ${
+                  role === "teacher" ? "rgb(231, 86, 86), #e74c3c" : "rgb(86, 160, 213), #3498db"
+                })`,
+              }}
               onClick={() => {
                 console.log(`Navigating to /subjects/${subjectName}/${setName}`);
                 navigate(`/subjects/${subjectName}/${setName}`);
               }}
             >
-              <h3>{setName}</h3>
-              <p>
+              <h3 className="set-card-title">{setName}</h3>
+              <p className="set-card-text">
                 <strong>Short Answers:</strong> {setData.short.length}
               </p>
-              <p>
+              <p className="set-card-text">
                 <strong>Medium Answers:</strong> {setData.medium.length}
               </p>
-              <p>
+              <p className="set-card-text">
                 <strong>Long Answers:</strong> {setData.long.length}
               </p>
             </div>

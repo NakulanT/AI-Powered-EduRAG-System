@@ -1,43 +1,175 @@
+/* General Container */
 .set-container {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-    text-align: center;
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  font-family: 'IBM Plex Mono', monospace;
+  background: linear-gradient(145deg, #ffffff, #f0f4f8);
+  border: 1px solid rgba(231, 76, 60, 0.1);
+}
+
+/* Subtle Background Animation */
+.set-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(231, 76, 60, 0.05) 0%, transparent 70%);
+  opacity: 0.5;
+  z-index: 0;
+  animation: pulse 10s infinite ease-in-out;
+}
+
+/* Ensure content is above the background */
+.set-container > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Header */
+.set-title {
+  font-size: 32px;
+  font-weight: 600;
+  text-transform: capitalize;
+  margin-bottom: 25px;
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Question Sections */
+.question-section {
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: left; /* Align section content to the left */
+}
+
+.question-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Section Title */
+.question-section h3 {
+  font-size: 24px;
+  color: #2d2d2d;
+  text-decoration: none;
+  margin-bottom: 15px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 500;
+  position: relative;
+  display: inline-block;
+}
+
+.question-section h3::after {
+  content: '';
+  position: absolute;
+  width: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, #ff6b6b, #e74c3c);
+  bottom: -5px;
+  left: 0; /* Align underline to the left */
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.question-section h3:hover::after {
+  width: 100%;
+}
+
+/* Question List */
+.question-list {
+  list-style-position: inside; /* Ensure numbers are inside the list item */
+  padding: 0;
+  margin: 0;
+}
+
+/* Question Item */
+.question-item {
+  padding: 18px;
+  margin: 10px 0;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #2d2d2d;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'IBM Plex Mono', monospace;
+  position: relative;
+  overflow: hidden;
+  text-align: left; /* Align question text to the left */
+}
+
+/* Hover Effect for Questions */
+.question-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Add a subtle shine effect on hover */
+.question-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.question-item:hover::before {
+  left: 100%;
+}
+
+/* Loading & Not Found States */
+.loading,
+.not-found {
+  text-align: center;
+  font-size: 22px;
+  margin-top: 60px;
+  color: #ff4757;
+  font-weight: 500;
+  font-family: 'IBM Plex Mono', monospace;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
   }
-  
-  .set-title {
-    font-size: 2rem;
-    color: #333;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-transform: capitalize;
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
   }
-  
-  .question-section {
-    text-align: left;
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
   }
-  
-  .question-section h3 {
-    font-size: 1.3rem;
-    color: #444;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 5px;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
   }
-  
-  .question-section ul {
-    list-style-type: none;
-    padding: 0;
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .question-section li {
-    background: white;
-    margin: 8px 0;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.1);
-  }
-  
+}

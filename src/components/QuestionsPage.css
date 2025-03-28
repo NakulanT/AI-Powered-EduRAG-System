@@ -1,4 +1,4 @@
-/* General Container */
+/* General Container
 .questions-container {
   max-width: 800px;
   margin: 40px auto;
@@ -9,7 +9,7 @@
   text-align: center;
 }
 
-/* Header */
+
 .questions-container h1 {
   font-size: 28px;
   font-weight: bold;
@@ -21,7 +21,6 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* Question Categories */
 .question-category {
   padding: 20px;
   border-radius: 10px;
@@ -30,7 +29,6 @@
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Category Title */
 .question-category h3 {
   font-size: 22px;
   color: #ff6b6b;
@@ -38,7 +36,6 @@
   margin-bottom: 10px;
 }
 
-/* Question List */
 .question-category ul {
   list-style: none;
   padding: 0;
@@ -61,7 +58,7 @@
   box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Loading & Not Found States */
+
 .loading,
 .not-found {
   text-align: center;
@@ -69,4 +66,4 @@
   margin-top: 50px;
   color: #ff4757;
   font-weight: bold;
-}
+} */

@@ -10,6 +10,53 @@
             {
                 "subject": "DSA",
                 "sets": [
+                    "set-1",
+                    "set-2"
+                ]
+            },
+            {
+                "subject": "Machine Learning",
+                "sets": [
+                    "set-1"
+                ]
+            },
+            {
+                "subject": "english",
+                "sets": [
+                    "set-1"
+                ]
+            },
+            {
+                "subject": "oops",
+                "sets": [
+                    "set-1"
+                ]
+            },
+            {
+                "subject": "R",
+                "sets": [
+                    "set-1"
+                ]
+            }
+        ]
+    },
+    {
+        "firstName": "Dinesh",
+        "lastName": "B",
+        "email": "dineshB@nandhaengg.org",
+        "password": "$2b$12$A5tYDejqpdk20FBraWvokuXWsKO3IFv1WmxHdMqSRdwMWhg5qW9KK",
+        "dept": "Artificial Intelligence and Data Science",
+        "year": "IV",
+        "viewed": [
+            {
+                "subject": "DSA",
+                "sets": [
+                    "set-1"
+                ]
+            },
+            {
+                "subject": "data structres",
+                "sets": [
                     "set-1"
                 ]
             },

@@ -11,12 +11,11 @@ const AnswerRetrieval = () => {
   const [results, setResults] = useState(null);
 
   // Retrieve username and role from localStorage
-  const username = localStorage.getItem('username');
+  const email = localStorage.getItem('email');
   const role = localStorage.getItem('role');
 
   useEffect(() => {
     console.log("Role:", role);
-    console.log("Username:", username);
   }, []); // Empty dependency array since we only want this to run once on mount
 
   const handleSubmit = async (e) => {
@@ -56,7 +55,7 @@ const AnswerRetrieval = () => {
   return (
     <div>
       {/* Navigation outside the parent container */}
-      {role === "teacher" ? <StaffNav username={username} /> : <StudentNav username={username} />}
+      {role === "teacher" ? <StaffNav username={email} /> : <StudentNav username={email} />}
       
       {/* Parent container for the main content */}
       <div style={styles.parent}>
@@ -132,7 +131,6 @@ const styles = {
     borderRadius: '8px',
     border: '1px solid #ccc',
     fontSize: '16px',
-    fontFamily: "'Poppins', sans-serif",
     backgroundColor: '#fafafa',
     color: '#333',
     outline: 'none',

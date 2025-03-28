@@ -1,75 +1,135 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import StaffNav from "./StaffNav";
 import StudentNav from "./StudentNav";
+import "./ViewedStudents.css";
 
-function StudentsView() {
-  const [viewedData, setViewedData] = useState(null);
+function ViewedStudents() {
+  const [viewedData, setViewedData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedSet, setSelectedSet] = useState("");
   const email = localStorage.getItem("email");
   const role = localStorage.getItem("role");
+  const navigate = useNavigate();
 
+  // Redirect to login if not authenticated or not a teacher
   useEffect(() => {
-    axios.get("http://localhost:5000/students/viewed")
+    console.log("ViewedStudents component rendered");
+    console.log("Email from localStorage:", email);
+    console.log("Role from localStorage:", role);
+
+    if (!email || !role) {
+      console.log("Email or role missing, redirecting to /");
+      navigate("/");
+    } else if (role !== "teacher") {
+      console.log("User is not a teacher, redirecting to /Home");
+      navigate("/Home");
+    }
+  }, [email, role, navigate]);
+
+  // Fetch viewed students data
+  useEffect(() => {
+    if (!email || role !== "teacher") return; // Skip if not authenticated or not a teacher
+
+    setLoading(true);
+    setError(null);
+
+    axios
+      .get("http://localhost:5000/students/viewed", {
+        headers: {
+          Email: email, // Send teacher's email in headers
+        },
+      })
       .then((response) => {
-        console.log("Viewed students data:", response.data);
+        console.log("Viewed students data fetched:", response.data);
         setViewedData(response.data);
         setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching viewed students:", error);
+        setError(
+          error.response?.data?.error || "Failed to load viewed students data. Please try again."
+        );
+        setViewedData({});
         setLoading(false);
       });
-  }, []);
+  }, [email, role]);
 
-  // Handle subject selection
-  const handleSubjectChange = (e) => {
-    setSelectedSubject(e.target.value);
-    setSelectedSet(""); // Reset selected set when subject changes
-  };
-
-  // Handle set selection
-  const handleSetChange = (e) => {
-    setSelectedSet(e.target.value);
+  // Extract unique subjects from viewedData
+  const getSubjects = () => {
+    return Object.keys(viewedData); // Subjects are the top-level keys (e.g., "DSA", "Machine Learning")
   };
 
   // Get unique sets for the selected subject
   const getSetsForSubject = (subject) => {
     if (!subject || !viewedData[subject]) return [];
-    const allSets = viewedData[subject].flatMap(student => student.viewed_sets);
+    // Aggregate all viewed_sets arrays for the subject and remove duplicates
+    const allSets = viewedData[subject].flatMap((student) => student.viewed_sets);
     return [...new Set(allSets)]; // Remove duplicates
   };
 
   // Get students who viewed the selected set
   const getStudentsForSet = (subject, setName) => {
     if (!subject || !setName || !viewedData[subject]) return [];
-    return viewedData[subject]
-      .filter(student => student.viewed_sets.includes(setName))
-      .map(student => student.username);
+    // Filter students who have viewed the selected set
+    return viewedData[subject].filter((student) => student.viewed_sets.includes(setName));
   };
 
-  if (loading) return <h2 style={styles.loading}>Loading...</h2>;
-  if (!viewedData || Object.keys(viewedData).length === 0) return <h2 style={styles.noData}>No data available.</h2>;
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <h2 className="loading">🔄 Loading viewed students, please wait...</h2>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="error-container">
+        <h2 className="not-found">❌ {error}</h2>
+        <button className="back-button" onClick={() => navigate("/Home")}>
+          Back to Home
+        </button>
+      </div>
+    );
+  }
+
+  // Check if there is any viewed data to display
+  const hasViewedData = Object.keys(viewedData).length > 0;
+
+  if (!hasViewedData) {
+    return (
+      <div className="error-container">
+        <h2 className="not-found">❌ No students have viewed any sets yet.</h2>
+        <button className="back-button" onClick={() => navigate("/Home")}>
+          Back to Home
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <div style={styles.page}>
+    <div className="viewed-students-page">
       {role === "teacher" ? <StaffNav username={email} /> : <StudentNav username={email} />}
-      <div style={styles.parent}>
-        <h1 style={styles.title}>Students' Viewed Sets</h1>
+
+      <div className="viewed-students-container">
 
         {/* Horizontal Subject and Set Selection */}
-        <div style={styles.selectionContainer}>
-          <div style={styles.selectWrapper}>
-            <label style={styles.label}>Subject:</label>
+        <div className="selection-container">
+          <div className="select-wrapper">
             <select
               value={selectedSubject}
-              onChange={handleSubjectChange}
-              style={styles.select}
+              onChange={(e) => {
+                setSelectedSubject(e.target.value);
+                setSelectedSet(""); // Reset selected set when subject changes
+              }}
+              className="select"
             >
               <option value="">-- Choose a Subject --</option>
-              {Object.keys(viewedData).map((subject) => (
+              {getSubjects().map((subject) => (
                 <option key={subject} value={subject}>
                   {subject}
                 </option>
@@ -77,12 +137,11 @@ function StudentsView() {
             </select>
           </div>
           {selectedSubject && (
-            <div style={styles.selectWrapper}>
-              <label style={styles.label}>Set:</label>
+            <div className="select-wrapper">
               <select
                 value={selectedSet}
-                onChange={handleSetChange}
-                style={styles.select}
+                onChange={(e) => setSelectedSet(e.target.value)}
+                className="select"
               >
                 <option value="">-- Choose a Set --</option>
                 {getSetsForSubject(selectedSubject).map((setName) => (
@@ -95,23 +154,33 @@ function StudentsView() {
           )}
         </div>
 
-        {/* Students Who Viewed Selected Set */}
+        {/* Table of Students Who Viewed Selected Set */}
         {selectedSubject && selectedSet && (
-          <div style={styles.studentsContainer}>
-            <h3 style={styles.studentsTitle}>
-              Students Who Viewed "{selectedSet}" in "{selectedSubject}"
-            </h3>
-            <ul style={styles.studentsList}>
-              {getStudentsForSet(selectedSubject, selectedSet).length > 0 ? (
-                getStudentsForSet(selectedSubject, selectedSet).map((student, idx) => (
-                  <li key={idx} style={styles.studentItem}>
-                    {student}
-                  </li>
-                ))
-              ) : (
-                <li style={styles.noStudents}>No students have viewed this set.</li>
-              )}
-            </ul>
+          <div className="students-container">
+            {getStudentsForSet(selectedSubject, selectedSet).length > 0 ? (
+              <table className="students-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Mail</th>
+                    <th>Dept</th>
+                    <th>Year</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {getStudentsForSet(selectedSubject, selectedSet).map((student, idx) => (
+                    <tr key={idx} className="student-row">
+                      <td>{`${student.firstName} ${student.lastName}`}</td>
+                      <td>{student.email}</td>
+                      <td>{student.dept}</td>
+                      <td>{student.year}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p className="no-students">No students have viewed this set.</p>
+            )}
           </div>
         )}
       </div>
@@ -119,105 +188,4 @@ function StudentsView() {
   );
 }
 
-const styles = {
-  page: {
-    minHeight: '100vh',
-    background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-  },
-  parent: {
-    padding: '20px',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  title: {
-    color: '#e74c3c',
-    textAlign: 'center',
-    fontSize: '32px',
-    fontWeight: '700',
-    margin: '20px 0',
-    textShadow: '1px 1px 3px rgba(0,0,0,0.2)',
-    fontFamily: "'Poppins', sans-serif",
-  },
-  loading: {
-    textAlign: 'center',
-    color: '#333',
-    fontFamily: "'Poppins', sans-serif",
-    marginTop: '50px',
-  },
-  noData: {
-    textAlign: 'center',
-    color: '#333',
-    fontFamily: "'Poppins', sans-serif",
-    marginTop: '50px',
-  },
-  selectionContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: '30px',
-    marginBottom: '30px',
-    flexWrap: 'wrap', // Responsive for smaller screens
-  },
-  selectWrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  label: {
-    fontSize: '18px',
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: '8px',
-    fontFamily: "'Poppins', sans-serif",
-  },
-  select: {
-    width: '250px',
-    padding: '12px',
-    borderRadius: '8px',
-    border: '1px solid #ccc',
-    fontSize: '16px',
-    fontFamily: "'Poppins', sans-serif",
-    backgroundColor: '#fff',
-    color: '#333',
-    outline: 'none',
-    cursor: 'pointer',
-    transition: 'border-color 0.3s',
-  },
-  studentsContainer: {
-    width: '100%',
-    maxWidth: '600px',
-    padding: '20px',
-  },
-  studentsTitle: {
-    color: '#e74c3c',
-    fontSize: '22px',
-    fontWeight: '600',
-    marginBottom: '20px',
-    textAlign: 'center',
-    fontFamily: "'Poppins', sans-serif",
-  },
-  studentsList: {
-    listStyleType: 'none',
-    padding: '0',
-    margin: '0',
-  },
-  studentItem: {
-    fontSize: '16px',
-    color: '#333',
-    padding: '12px',
-    marginBottom: '10px',
-    borderBottom: '1px solid #eee',
-    textAlign: 'center',
-    fontFamily: "'Poppins', sans-serif",
-  },
-  noStudents: {
-    fontSize: '16px',
-    color: '#666',
-    padding: '12px',
-    textAlign: 'center',
-    fontStyle: 'italic',
-    fontFamily: "'Poppins', sans-serif",
-  },
-};
-
-export default StudentsView;
+export default ViewedStudents;

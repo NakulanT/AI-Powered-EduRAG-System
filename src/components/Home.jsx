@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import StaffNav from "./StaffNav";
 import StudentNav from "./StudentNav";
+import "./Home.css";
 
 function Home() {
   const navigate = useNavigate();
@@ -40,33 +41,48 @@ function Home() {
     }
   }, [email, role]);
 
-  // Colors for subject cards based on role
+  // Colors for subject cards and title based on role
   const teacherColor = "#e74c3c"; // Red from StaffNav
   const studentColor = "#3498db"; // Blue from StudentNav
 
-  // Select color based on role
+  // Select colors based on role
   const cardColor = role === "teacher" ? teacherColor : studentColor;
+  const headingColor = role === "teacher" ? teacherColor : studentColor;
 
   return (
-    <div style={styles.container}>
+    <div className="home-container">
       {role === "teacher" ? <StaffNav username={email} /> : <StudentNav username={email} />}
-      <h2 style={styles.title}>📚 Available Subjects</h2>
+      <h2
+        className="home-title"
+        style={{
+          background: `linear-gradient(90deg, ${headingColor}, ${
+            role === "teacher" ? "#c0392b" : "#2980b9"
+          })`,
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}
+      >
+        📚 Available Subjects
+      </h2>
 
       {/* Subjects Grid */}
-      <div style={styles.gridContainer}>
+      <div className="home-grid">
         {Object.entries(subjects).map(([subjectName, sets]) => (
           <div
             key={subjectName}
-            style={{ ...styles.card, background: cardColor }}
+            className="home-card"
+            style={{
+              background: `linear-gradient(135deg, ${
+                role === "teacher" ? "rgb(231, 86, 86), #e74c3c" : "rgb(86, 160, 213), #3498db"
+              })`,
+            }}
             onClick={() => {
               console.log(`Navigating to /subjects/${subjectName}`);
               navigate(`/subjects/${subjectName}`);
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-5px)")}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
           >
-            <h2 style={styles.cardTitle}>{subjectName}</h2>
-            <p style={styles.cardText}>
+            <h2 className="home-card-title">{subjectName}</h2>
+            <p className="home-card-text">
               <strong>Total Sets:</strong> {Object.keys(sets).length}
             </p>
           </div>
@@ -75,60 +91,5 @@ function Home() {
     </div>
   );
 }
-
-const styles = {
-  container: {
-    minHeight: "100vh",
-    background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
-  },
-  title: {
-    textAlign: "center",
-    marginTop: "40px",
-    fontSize: "28px",
-    fontWeight: "700",
-    color: "#333",
-    textShadow: "1px 1px 2px rgba(0,0,0,0.1)",
-    paddingBottom: "20px",
-  },
-  gridContainer: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", // Allow columns to grow
-    gap: "30px", // Increased gap for better spacing
-    padding: "20px", // Reduced padding to avoid overflow
-    justifyContent: "center",
-    maxWidth: "1200px", // Limit max width for larger screens
-    margin: "0 auto", // Center the grid
-  },
-  card: {
-    height: "160px",
-    color: "white",
-    padding: "25px",
-    borderRadius: "20px",
-    textAlign: "center",
-    cursor: "pointer",
-    boxShadow: "0 8px 25px rgba(0,0,0,0.2)",
-    transition: "transform 0.3s ease, box-shadow 0.3s ease",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    border: "2px solid rgba(255,255,255,0.3)",
-    overflow: "hidden",
-    position: "relative",
-  },
-  cardTitle: {
-    fontSize: "24px",
-    fontWeight: "600",
-    margin: "0",
-    textTransform: "capitalize",
-    textShadow: "1px 1px 2px rgba(0,0,0,0.3)",
-  },
-  cardText: {
-    fontSize: "16px",
-    margin: "10px 0 0",
-    fontWeight: "500",
-    textShadow: "1px 1px 2px rgba(0,0,0,0.2)",
-  },
-};
 
 export default Home;

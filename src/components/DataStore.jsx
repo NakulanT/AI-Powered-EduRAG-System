@@ -10,12 +10,11 @@ const DataStore = () => {
   const [loading, setLoading] = useState(false);
 
   // Retrieve username and role from localStorage
-  const username = localStorage.getItem('username');
+  const email = localStorage.getItem('email');
   const role = localStorage.getItem('role');
 
   useEffect(() => {
     console.log("Role:", role);
-    console.log("Username:", username);
     // You could add an initial GET request here if needed
   }, []); // Empty dependency array since we only want this to run once on mount
 
@@ -54,9 +53,9 @@ const DataStore = () => {
   return (
     <div>
       {role === "teacher" ? (
-        <StaffNav username={username} />
+        <StaffNav username={email} />
       ) : (
-        <StudentNav username={username} />
+        <StudentNav username={email} />
       )}
       <div style={styles.parent}>
         <div style={styles.container}>

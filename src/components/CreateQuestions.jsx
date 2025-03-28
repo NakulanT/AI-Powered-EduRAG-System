@@ -11,7 +11,7 @@ function CreateQuestions() {
   const [mediumAnswer, setMediumAnswer] = useState(0);
   const [longAnswer, setLongAnswer] = useState(0);
   const [loading, setLoading] = useState(false);
-  const username = localStorage.getItem("username");
+  const email = localStorage.getItem("email");
   const role = localStorage.getItem("role");
 
   const navigate = useNavigate();
@@ -23,12 +23,13 @@ function CreateQuestions() {
     const input_data = {
       subject_name: subjectName,
       topics: topics.split(",").map(topic => topic.trim()),
-      short_answer: shortAnswer,
-      medium_answer: mediumAnswer,
-      long_answer: longAnswer,
+      short_answer: ""+shortAnswer,
+      medium_answer: "" + mediumAnswer,
+      long_answer: "" + longAnswer,
     };
 
     try {
+      console.log("Creating new question set with data:", input_data);
       const response = await axios.post("http://localhost:5000/questions/create", input_data);
       if (response.data.status === "success") {
         setLoading(false);
@@ -51,7 +52,7 @@ function CreateQuestions() {
 
   return (
     <div style={styles.parent}> {/* Changed from className="parent" to style={styles.parent} */}
-      {role === "teacher" ? <StaffNav username={username} /> : <StudentNav username={username} />}
+      {role === "teacher" ? <StaffNav username={email} /> : <StudentNav username={email} />}
       <div style={styles.container}>
         <h2 style={styles.title}>Create a New Question Set</h2>
 
@@ -140,7 +141,6 @@ const styles = {
     border: "1px solid #ddd",
     borderRadius: "10px",
     boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
-    fontFamily: "'Poppins', sans-serif",
     backgroundColor: "#fff",
     background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
 
@@ -167,7 +167,6 @@ const styles = {
     borderRadius: "5px",
     border: "1px solid #ccc",
     fontSize: "16px",
-    fontFamily: "'Poppins', sans-serif",
   },
   counter: {
     display: "flex",

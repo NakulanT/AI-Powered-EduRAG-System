@@ -67,9 +67,10 @@ function Authentication() {
       console.log("isSignUp:", isSignUp); // Debug
 
       if (!isSignUp) {
-        console.log("Login successful, storing email and role in localStorage");
+        console.log("Login successful, storing email, role, and name in localStorage");
         localStorage.setItem("email", user.email);
         localStorage.setItem("role", role);
+        localStorage.setItem("name", response.data.name); // Store the name in localStorage
 
         console.log("Navigating to /Home");
         toast.success("Login successful! Redirecting...");
@@ -107,12 +108,20 @@ function Authentication() {
       setLoading(false);
     }
   };
+
   return (
     <div className="auth-container">
       {/* Student Authentication Card */}
       <div className="auth-card student-card">
-        <h2>
-          <FaUserGraduate className="icon" /> {isStudentSignUp ? "Student Sign-Up" : "Student Sign-In"}
+        <h2
+          className="auth-card-title"
+          style={{
+            background: `linear-gradient(90deg, #3498db, #2980b9)`,
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          <FaUserGraduate className="auth-icon" /> {isStudentSignUp ? "Student Sign-Up" : "Student Sign-In"}
         </h2>
 
         <form onSubmit={(e) => handleSubmit(e, "student")}>
@@ -126,6 +135,7 @@ function Authentication() {
                 onChange={(e) => handleChange(e, "student")}
                 required
                 disabled={loading}
+                className="auth-input"
               />
               <input
                 type="text"
@@ -135,6 +145,7 @@ function Authentication() {
                 onChange={(e) => handleChange(e, "student")}
                 required
                 disabled={loading}
+                className="auth-input"
               />
             </>
           )}
@@ -146,6 +157,7 @@ function Authentication() {
             onChange={(e) => handleChange(e, "student")}
             required
             disabled={loading}
+            className="auth-input"
           />
           <input
             type="password"
@@ -155,6 +167,7 @@ function Authentication() {
             onChange={(e) => handleChange(e, "student")}
             required
             disabled={loading}
+            className="auth-input"
           />
           {isStudentSignUp && (
             <>
@@ -164,6 +177,7 @@ function Authentication() {
                 onChange={(e) => handleChange(e, "student")}
                 required
                 disabled={loading}
+                className="auth-select"
               >
                 <option value="">-- Select Department --</option>
                 {departments.map((dept) => (
@@ -178,6 +192,7 @@ function Authentication() {
                 onChange={(e) => handleChange(e, "student")}
                 required
                 disabled={loading}
+                className="auth-select"
               >
                 <option value="">-- Select Year --</option>
                 {years.map((year) => (
@@ -188,14 +203,14 @@ function Authentication() {
               </select>
             </>
           )}
-          <button type="submit" disabled={loading}>
+          <button type="submit" disabled={loading} className="auth-button student-button">
             {loading ? "Processing..." : isStudentSignUp ? "Sign Up" : "Sign In"}
           </button>
         </form>
 
         <p className="switch-text">
           {isStudentSignUp ? "Already have an account?" : "Don't have an account?"}
-          <span onClick={() => setIsStudentSignUp(!isStudentSignUp)}>
+          <span onClick={() => setIsStudentSignUp(!isStudentSignUp)} className="switch-link">
             {isStudentSignUp ? " Sign In" : " Sign Up"}
           </span>
         </p>
@@ -203,8 +218,15 @@ function Authentication() {
 
       {/* Teacher Authentication Card */}
       <div className="auth-card teacher-card">
-        <h2>
-          <FaChalkboardTeacher className="icon" /> {isTeacherSignUp ? "Teacher Sign-Up" : "Teacher Sign-In"}
+        <h2
+          className="auth-card-title"
+          style={{
+            background: `linear-gradient(90deg, #e74c3c, #c0392b)`,
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          <FaChalkboardTeacher className="auth-icon" /> {isTeacherSignUp ? "Teacher Sign-Up" : "Teacher Sign-In"}
         </h2>
 
         <form onSubmit={(e) => handleSubmit(e, "teacher")}>
@@ -218,6 +240,7 @@ function Authentication() {
                 onChange={(e) => handleChange(e, "teacher")}
                 required
                 disabled={loading}
+                className="auth-input"
               />
               <input
                 type="text"
@@ -227,6 +250,7 @@ function Authentication() {
                 onChange={(e) => handleChange(e, "teacher")}
                 required
                 disabled={loading}
+                className="auth-input"
               />
             </>
           )}
@@ -238,6 +262,7 @@ function Authentication() {
             onChange={(e) => handleChange(e, "teacher")}
             required
             disabled={loading}
+            className="auth-input"
           />
           <input
             type="password"
@@ -247,6 +272,7 @@ function Authentication() {
             onChange={(e) => handleChange(e, "teacher")}
             required
             disabled={loading}
+            className="auth-input"
           />
           {isTeacherSignUp && (
             <>
@@ -256,6 +282,7 @@ function Authentication() {
                 onChange={(e) => handleChange(e, "teacher")}
                 required
                 disabled={loading}
+                className="auth-select"
               >
                 <option value="">-- Select Department --</option>
                 {departments.map((dept) => (
@@ -270,6 +297,7 @@ function Authentication() {
                 onChange={(e) => handleChange(e, "teacher")}
                 required
                 disabled={loading}
+                className="auth-select"
               >
                 <option value="">-- Select Position --</option>
                 {positions.map((pos) => (
@@ -280,18 +308,20 @@ function Authentication() {
               </select>
             </>
           )}
-          <button type="submit" disabled={loading}>
+          <button type="submit" disabled={loading} className="auth-button teacher-button">
             {loading ? "Processing..." : isTeacherSignUp ? "Sign Up" : "Sign In"}
           </button>
         </form>
 
         <p className="switch-text">
           {isTeacherSignUp ? "Already have an account?" : "Don't have an account?"}
-          <span onClick={() => setIsTeacherSignUp(!isTeacherSignUp)}>
+          <span onClick={() => setIsTeacherSignUp(!isTeacherSignUp)} className="switch-link">
             {isTeacherSignUp ? " Sign In" : " Sign Up"}
           </span>
         </p>
       </div>
+
+      <ToastContainer />
     </div>
   );
 }

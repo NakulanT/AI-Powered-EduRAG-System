@@ -174,7 +174,9 @@ def login_student():
 
     for student in students:
         if student["email"] == data["email"] and bcrypt.check_password_hash(student["password"], data["password"]):
-            return jsonify({"message": "Student login successful!"})
+            # Combine first name and last name
+            full_name = f"{student['firstName']} {student['lastName']}"
+            return jsonify({"message": "Student login successful!", "name": full_name})
 
     return jsonify({"error": "Invalid email or password!"}), 401
 
@@ -186,7 +188,9 @@ def login_teacher():
 
     for teacher in teachers:
         if teacher["email"] == data["email"] and bcrypt.check_password_hash(teacher["password"], data["password"]):
-            return jsonify({"message": "Teacher login successful!"})
+            # Combine first name and last name
+            full_name = f"{teacher['firstName']} {teacher['lastName']}"
+            return jsonify({"message": "Teacher login successful!", "name": full_name})
 
     return jsonify({"error": "Invalid email or password!"}), 401
 
@@ -260,6 +264,11 @@ def get_viewed_students():
     for student in students_data:
         email = student.get("email")
         viewed = student.get("viewed", [])
+        # Extract additional student details
+        first_name = student.get("firstName", "")
+        last_name = student.get("lastName", "")
+        dept = student.get("dept", "")
+        year = student.get("year", "")
 
         for subject in viewed:
             subject_name = subject["subject"]
@@ -270,15 +279,75 @@ def get_viewed_students():
 
             subject_view_data[subject_name].append({
                 "email": email,
+                "firstName": first_name,
+                "lastName": last_name,
+                "dept": dept,
+                "year": year,
                 "viewed_sets": viewed_sets
             })
 
     return jsonify(subject_view_data)
 
+@app.route("/students/viewed-sets", methods=["GET"])
+def get_viewed_sets():
+    try:
+        # Get the user's email from the request headers
+        email = request.headers.get("Email")
+        if not email:
+            logger.error("Email header is required")
+            return jsonify({"error": "Email header is required"}), 400
+
+        # Read students.json to find the user
+        students_data = read_json(STUDENTS_FILE)
+        user = next((student for student in students_data if student["email"] == email), None)
+        if not user:
+            logger.error(f"User with email {email} not found")
+            return jsonify({"error": "User not found"}), 404
+
+        # Prepare the response
+        viewed_sets_data = {}
+        for viewed in user.get("viewed", []):
+            subject_name = viewed["subject"]
+            sets = viewed["sets"]
+
+            # Fetch the subject data from DB/subjects
+            subject_file = os.path.join(SUBJECTS_DIR, f"{subject_name}.json")
+            if not os.path.exists(subject_file):
+                logger.warning(f"Subject file {subject_file} not found")
+                continue  # Skip if subject file is not found
+
+            subject_data = read_json(subject_file)
+            if not subject_data:
+                logger.warning(f"Subject file {subject_file} is empty or invalid")
+                continue  # Skip if subject data couldn't be loaded
+
+            # For each set, get the question counts
+            viewed_sets_data[subject_name] = {}
+            for set_name in sets:
+                set_data = subject_data.get(set_name, {})
+                viewed_sets_data[subject_name][set_name] = {
+                    "short": len(set_data.get("short", [])),
+                    "medium": len(set_data.get("medium", [])),
+                    "long": len(set_data.get("long", []))
+                }
+
+        if not viewed_sets_data:
+            logger.info(f"No viewed sets found for user {email}")
+            return jsonify({"error": "No viewed sets found for this user"}), 404
+
+        logger.debug(f"Returning viewed sets data for user {email}: {viewed_sets_data}")
+        return jsonify(viewed_sets_data), 200
+
+    except Exception as e:
+        logger.error(f"Error in /students/viewed-sets: {e}")
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+
 @app.route("/questions/create", methods=["POST"])
 def create_question():
     try:
         data = request.get_json()
+        print("Data", data)
         subject_name = data.get("subject_name")
         topics = data.get("topics")
         short_answer = data.get("short_answer")
@@ -295,6 +364,7 @@ def create_question():
             "medium_answer": medium_answer,
             "long_answer": long_answer
         }
+        print(input_data)
 
         json_text = json.dumps(input_data, indent=2)
         api = API()
@@ -316,6 +386,7 @@ def create_question():
 
         return jsonify({"status": "success", "message": "Question set added successfully", "set": set_number}), 200
     except Exception as e:
+        print(e)
         return jsonify({"status": "error", "message": str(e)}), 500
 
 if __name__ == "__main__":
