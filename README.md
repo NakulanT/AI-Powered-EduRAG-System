@@ -116,11 +116,15 @@ curl -X POST http://localhost:5000/query -H "Content-Type: application/json" -d 
 
 ## How It Works
 
+
 1. **Content Storage**: Educational text is chunked and indexed in ChromaDB using SentenceTransformer embeddings.
 2. **Query Processing**: User queries are processed with SpaCy and NLTK for keyword extraction and tokenization, then matched against stored chunks.
 3. **Answer Generation**: Retrieved chunks are fed into DeepSeek 1.5B via Ollama to generate concise answers.
+![Alt text](RAG%20flowchart.png)
 4. **Question Creation**: Gemini 2.0 generates question sets based on provided topics and answer lengths.
+![Alt text](created-questions.png)
 5. **User Interaction**: The React frontend communicates with the Flask backend to display content and handle user actions.
+![Alt text](home.png)
 
 ## Future Enhancements
 
