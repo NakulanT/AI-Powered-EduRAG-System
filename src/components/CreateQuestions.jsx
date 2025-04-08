@@ -10,7 +10,9 @@ function CreateQuestions() {
   const [shortAnswer, setShortAnswer] = useState(0);
   const [mediumAnswer, setMediumAnswer] = useState(0);
   const [longAnswer, setLongAnswer] = useState(0);
+  const [questionType, setQuestionType] = useState("applying");
   const [loading, setLoading] = useState(false);
+
   const email = localStorage.getItem("email");
   const role = localStorage.getItem("role");
 
@@ -23,9 +25,10 @@ function CreateQuestions() {
     const input_data = {
       subject_name: subjectName,
       topics: topics.split(",").map(topic => topic.trim()),
-      short_answer: ""+shortAnswer,
+      short_answer: "" + shortAnswer,
       medium_answer: "" + mediumAnswer,
       long_answer: "" + longAnswer,
+      type: questionType, // <-- newly added
     };
 
     try {
@@ -42,7 +45,6 @@ function CreateQuestions() {
     }
   };
 
-  // Counter handlers with 0-10 range constraint
   const adjustCount = (setter, value) => {
     setter(prev => {
       const newValue = prev + value;
@@ -51,7 +53,7 @@ function CreateQuestions() {
   };
 
   return (
-    <div style={styles.parent}> {/* Changed from className="parent" to style={styles.parent} */}
+    <div style={styles.parent}>
       {role === "teacher" ? <StaffNav username={email} /> : <StudentNav username={email} />}
       <div style={styles.container}>
         <h2 style={styles.title}>Create a New Question Set</h2>
@@ -75,49 +77,36 @@ function CreateQuestions() {
             style={styles.input} 
           />
 
+          <label style={styles.label}>Type of Questions:</label>
+          <select 
+            value={questionType} 
+            onChange={(e) => setQuestionType(e.target.value)} 
+            style={styles.input}
+          >
+            <option value="real time scenario">Applying (Scenario)</option>
+            <option value="remembering">Remembering</option>
+            <option value="mixed of all bllom's element">Mixed (All Bloom's Elements)</option>
+          </select>
+
           <label style={styles.label}>Short Answer Questions:</label>
           <div style={styles.counter}>
-            <button 
-              type="button" 
-              style={styles.counterButton} 
-              onClick={() => adjustCount(setShortAnswer, -1)}
-            >-</button>
+            <button type="button" style={styles.counterButton} onClick={() => adjustCount(setShortAnswer, -1)}>-</button>
             <span style={styles.counterValue}>{shortAnswer}</span>
-            <button 
-              type="button" 
-              style={styles.counterButton} 
-              onClick={() => adjustCount(setShortAnswer, 1)}
-            >+</button>
+            <button type="button" style={styles.counterButton} onClick={() => adjustCount(setShortAnswer, 1)}>+</button>
           </div>
 
           <label style={styles.label}>Medium Answer Questions:</label>
           <div style={styles.counter}>
-            <button 
-              type="button" 
-              style={styles.counterButton} 
-              onClick={() => adjustCount(setMediumAnswer, -1)}
-            >-</button>
+            <button type="button" style={styles.counterButton} onClick={() => adjustCount(setMediumAnswer, -1)}>-</button>
             <span style={styles.counterValue}>{mediumAnswer}</span>
-            <button 
-              type="button" 
-              style={styles.counterButton} 
-              onClick={() => adjustCount(setMediumAnswer, 1)}
-            >+</button>
+            <button type="button" style={styles.counterButton} onClick={() => adjustCount(setMediumAnswer, 1)}>+</button>
           </div>
 
           <label style={styles.label}>Long Answer Questions:</label>
           <div style={styles.counter}>
-            <button 
-              type="button" 
-              style={styles.counterButton} 
-              onClick={() => adjustCount(setLongAnswer, -1)}
-            >-</button>
+            <button type="button" style={styles.counterButton} onClick={() => adjustCount(setLongAnswer, -1)}>-</button>
             <span style={styles.counterValue}>{longAnswer}</span>
-            <button 
-              type="button" 
-              style={styles.counterButton} 
-              onClick={() => adjustCount(setLongAnswer, 1)}
-            >+</button>
+            <button type="button" style={styles.counterButton} onClick={() => adjustCount(setLongAnswer, 1)}>+</button>
           </div>
 
           <button type="submit" style={styles.button} disabled={loading}>
@@ -129,6 +118,7 @@ function CreateQuestions() {
   );
 }
 
+// (Keep styles unchanged)
 const styles = {
   parent: {
     minHeight: "100vh",
@@ -143,7 +133,6 @@ const styles = {
     boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
     backgroundColor: "#fff",
     background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
-
   },
   title: {
     textAlign: "center",

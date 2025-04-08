@@ -8,7 +8,7 @@ from ollama_model import generate_answer
 import traceback
 import logging
 from waitress import serve
-from api import API
+from api import Question_API
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -345,6 +345,9 @@ def get_viewed_sets():
 
 @app.route("/questions/create", methods=["POST"])
 def create_question():
+    print("Received request to create question")
+    for i in range(10):
+        print("Iteration", i)
     try:
         data = request.get_json()
         print("Data", data)
@@ -353,6 +356,8 @@ def create_question():
         short_answer = data.get("short_answer")
         medium_answer = data.get("medium_answer")
         long_answer = data.get("long_answer")
+        types = data.get("type")
+        print("Types", types)
 
         if not all([subject_name, topics, short_answer, medium_answer, long_answer]):
             return jsonify({"status": "error", "message": "Missing required fields"}), 400
@@ -360,6 +365,7 @@ def create_question():
         input_data = {
             "subject_name": subject_name,
             "topics": topics,
+            "type" : types,
             "short_answer": short_answer,
             "medium_answer": medium_answer,
             "long_answer": long_answer
@@ -367,7 +373,7 @@ def create_question():
         print(input_data)
 
         json_text = json.dumps(input_data, indent=2)
-        api = API()
+        api = Question_API()
         response = api.generate(json_text)
 
         subject_file = os.path.join(SUBJECTS_DIR, f"{subject_name}.json")

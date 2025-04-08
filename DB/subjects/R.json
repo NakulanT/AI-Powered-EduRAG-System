@@ -5,5 +5,74 @@
     ],
     "medium": [],
     "long": []
+  },
+  "set-2": {
+    "short": [
+      "What are the basic data types in R?",
+      "Name two common plotting functions in R."
+    ],
+    "medium": [
+      "Explain the difference between a vector and a list in R.",
+      "Describe how to create a scatter plot in R and customize its appearance."
+    ],
+    "long": [
+      "Explain how to create a histogram and interpret its features, discussing how different bin sizes can affect the visualization.",
+      "Describe the process of creating a complex data visualization in R, including data preparation, plotting, and customization of labels, titles, and legends."
+    ]
+  },
+  "set-3": {
+    "short": [
+      "What are the basic data types in R?"
+    ],
+    "medium": [
+      "Explain the difference between 'for' and 'while' loops in R with examples."
+    ],
+    "long": [
+      "Describe how to use conditional statements (if, else if, else) in R to control program flow with a detailed example."
+    ]
+  },
+  "set-4": {
+    "short": [],
+    "medium": [],
+    "long": [
+      "Explain the different data types available in R and provide examples of how each data type is used.  Specifically address numeric, character, logical, factor, and date/time data types and the nuances of working with them in R."
+    ]
+  },
+  "set-5": {
+    "short": [
+      "How do you create an array in R?"
+    ],
+    "medium": [],
+    "long": []
+  },
+  "set-6": {
+    "short": [],
+    "medium": [],
+    "long": [
+      "Describe the process of creating a scatter plot in R, highlighting the various aesthetic mappings available in ggplot2.",
+      "Explain how to create and customize a histogram in R, including adjusting bin width and adding density curves.",
+      "Describe how to generate box plots in R and explain how they can be used to identify outliers and compare distributions.",
+      "Explain how to create different types of charts for time series data in R and how they can be used to visualize trends and patterns.",
+      "Illustrate the creation of an interactive data visualization using R and relevant packages, explaining the steps to integrate user interactions and dynamic data updates."
+    ]
+  },
+  "set-7": {
+    "short": [
+      "What is ggplot2 in R?"
+    ],
+    "medium": [],
+    "long": [
+      "Describe different types of plots available in R for data visualization, with code examples using the `ggplot2` library."
+    ]
+  },
+  "set-8": {
+    "medium": [
+      "You have a dataset of customer purchase history. Describe how you would use R to create a scatter plot visualizing the relationship between the amount spent and the frequency of purchases.",
+      "Explain how to use R to create a histogram to visualize the distribution of ages in a given dataset. Include steps for labeling the axes and adding a title.",
+      "Given a dataset of website traffic, how would you use R to create a line chart showing the trend of daily visits over a month?",
+      "You have a dataset containing sales data for different products. Outline the steps to create a bar chart in R showing the total sales for each product.",
+      "Describe how you would use R to generate a box plot comparing the salaries of different departments in a company.",
+      "Explain how to use R to create a pie chart showing the percentage distribution of different categories in a categorical dataset."
+    ]
   }
 }
