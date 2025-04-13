@@ -1,0 +1,23 @@
+{
+  "null": {
+    "short": [
+      "A star topology is most cost-effective. A central switch connects each computer with dedicated cables.",
+      "Ping the user's local machine (127.0.0.1) to test basic network functionality at the application layer.",
+      "The Transport layer ensures reliable data transfer, using protocols like TCP.",
+      "Subtract 2 (for network and broadcast addresses) from 2 raised to the power of the number of host bits.",
+      "Implement a strong password policy and enforce regular password changes.",
+      "This is likely a DoS/DDoS attack. Mitigate by contacting your ISP, implementing rate limiting, and analyzing traffic."
+    ],
+    "medium": [
+      "Establish a VPN tunnel over the internet using the TCP/IP model. Encapsulate data with IPsec at the Network layer for secure transmission. Use TCP for reliable data transfer.",
+      "Distance Vector (RIP): simple, hop count, routing loops. Suitable for small networks. Link State (OSPF): complex, link cost, fast convergence. Suitable for large networks.",
+      "Mesh topology offers redundancy but high cost. Star topology is cheaper but has a single point of failure. Consider risks and budget for topology choice."
+    ],
+    "long": [
+      "Secure network for small business: Star topology (easy management). Security: Firewall, strong passwords, VLANs, and regular security audits. Routing: Static routing to minimize complexity. Justification: Balances security, cost, and ease of management.",
+      "Troubleshooting plan based on OSI model: Physical (cables, NIC). Data Link (MAC address filtering). Network (ping, traceroute). Transport (TCP connections). Application (server logs). Address potential issues at each layer.",
+      "Routing protocol comparison: RIP (simple, slow convergence). OSPF (complex, fast convergence). BGP (inter-domain routing). Scenario: Network with high traffic and link failures: OSPF because of its ability to adapt quickly.",
+      "Data breach plan: 1. Isolate affected systems. 2. Identify the breach source. 3. Eradicate malware. 4. Restore from backups. 5. Implement stronger security. Tools: SIEM, firewalls, IDS/IPS."
+    ]
+  }
+}

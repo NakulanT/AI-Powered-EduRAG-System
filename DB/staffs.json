@@ -6,5 +6,13 @@
         "password": "$2b$12$tefca7wg0.74rrcjJ5.mWen8srV9HPCaBXRZ0ngLpv8PqQggzOFvm",
         "dept": "Artificial Intelligence and Data Science",
         "position": "HoD"
+    },
+    {
+        "firstName": "Dinesh",
+        "lastName": "B",
+        "email": "dineshB@nandhaengg.org",
+        "password": "$2b$12$aJiB.l/898SMcATJqkCBY.wK3mmketkGRj9XUu5mmmTYcVWVUpxR6",
+        "dept": "Civil Engineering",
+        "position": "Assistant Professor"
     }
 ]

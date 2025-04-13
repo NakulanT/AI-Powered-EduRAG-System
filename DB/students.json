@@ -1,76 +1,23 @@
 [
     {
-        "firstName": "Nakulan",
-        "lastName": "T",
-        "email": "nakult721@gmail.com",
-        "password": "$2b$12$LynM4B/HS9BfSNDqbC0VYulVs1pVy6Bi3JfjErd0BhejfZjvg8uoi",
+        "firstName": "Dinesh",
+        "lastName": "B",
+        "email": "dineshB@nandhaengg.org",
+        "password": "$2b$12$v.kfdNUg1PvUhQLrovK4Yeq2LIkfUZHrkkFV6kLeyuXfu0aPgHX/W",
         "dept": "Artificial Intelligence and Data Science",
         "year": "IV",
         "viewed": [
+            {
+                "subject": "Machine Learning",
+                "sets": [
+                    "set-1"
+                ]
+            },
             {
                 "subject": "DSA",
                 "sets": [
                     "set-1",
                     "set-2"
-                ]
-            },
-            {
-                "subject": "Machine Learning",
-                "sets": [
-                    "set-1"
-                ]
-            },
-            {
-                "subject": "english",
-                "sets": [
-                    "set-1"
-                ]
-            },
-            {
-                "subject": "oops",
-                "sets": [
-                    "set-1"
-                ]
-            },
-            {
-                "subject": "R",
-                "sets": [
-                    "set-1",
-                    "set-2",
-                    "set-3",
-                    "set-4",
-                    "set-5",
-                    "set-6",
-                    "set-7",
-                    "set-8"
-                ]
-            }
-        ]
-    },
-    {
-        "firstName": "Dinesh",
-        "lastName": "B",
-        "email": "dineshB@nandhaengg.org",
-        "password": "$2b$12$A5tYDejqpdk20FBraWvokuXWsKO3IFv1WmxHdMqSRdwMWhg5qW9KK",
-        "dept": "Artificial Intelligence and Data Science",
-        "year": "IV",
-        "viewed": [
-            {
-                "subject": "DSA",
-                "sets": [
-                    "set-1"
-                ]
-            },
-            {
-                "subject": "data structres",
-                "sets": [
-                    "set-1"
-                ]
-            },
-            {
-                "subject": "Machine Learning",
-                "sets": [
-                    "set-1"
                 ]
             }
         ]

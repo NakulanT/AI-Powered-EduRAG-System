@@ -1,0 +1,17 @@
+{
+  "set-1": {
+    "short": [
+      "A Convolutional Neural Network (CNN) is a deep learning algorithm that can take in an image, assign importance (learnable weights and biases) to various aspects/objects in the image, and be able to differentiate one from the other.",
+      "The purpose of a convolutional layer in a CNN is to extract features from the input image. It does this by applying a set of learnable filters to the input, producing feature maps that represent different aspects of the image, like edges, textures, or shapes.",
+      "A Recurrent Neural Network (RNN) is a type of neural network designed to process sequential data. It has a feedback loop that allows information to persist across time steps, making it suitable for tasks like natural language processing and time series analysis.",
+      "The vanishing gradient problem in RNNs occurs when the gradients of the loss function become very small during training, making it difficult for the network to learn long-range dependencies in the data. This happens because the gradients are repeatedly multiplied as they are backpropagated through time.",
+      "LSTM stands for Long Short-Term Memory. It is a type of recurrent neural network (RNN) architecture designed to address the vanishing gradient problem. LSTMs have memory cells that can store information over long periods, enabling them to learn long-range dependencies in sequential data."
+    ],
+    "medium": [
+      "RNNs are designed to process sequential data by maintaining a hidden state that is updated at each time step. However, they struggle with long-range dependencies due to the vanishing gradient problem. LSTMs are a type of RNN that uses memory cells and gates to selectively store and update information over long periods, mitigating the vanishing gradient problem and enabling them to learn long-range dependencies more effectively. LSTMs are more complex than standard RNNs."
+    ],
+    "long": [
+      "A CNN architecture typically consists of convolutional layers, pooling layers, and fully connected layers. The convolutional layers extract features from the input image using learnable filters. Pooling layers reduce the spatial dimensions of the feature maps, reducing the number of parameters and making the network more robust to variations in the input. The fully connected layers then take the flattened feature maps and use them to classify the image into different categories. For image classification, the input image is fed into the convolutional layers, which extract features. These features are then passed through pooling layers to reduce dimensionality. Finally, the flattened feature maps are fed into fully connected layers, which output a probability distribution over the different classes. The class with the highest probability is the predicted class for the image."
+    ]
+  }
+}

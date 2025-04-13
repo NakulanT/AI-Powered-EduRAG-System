@@ -8,7 +8,7 @@ from ollama_model import generate_answer
 import traceback
 import logging
 from waitress import serve
-from api import Question_API
+from api import Question_API , Answer_API
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -24,6 +24,7 @@ logger = logging.getLogger(__name__)
 STUDENTS_FILE = "DB/students.json"
 STAFFS_FILE = "DB/staffs.json"
 SUBJECTS_DIR = "DB/subjects"
+ANSWERS_DIR = "DB/answers"
 
 # Initialize files if they don’t exist
 if not os.path.exists(STUDENTS_FILE):
@@ -394,6 +395,67 @@ def create_question():
     except Exception as e:
         print(e)
         return jsonify({"status": "error", "message": str(e)}), 500
+
+
+@app.route("/answers/create", methods=["POST"])
+def create_answers():
+    try:
+        data = request.get_json()
+        subject_name = data.get("subject_name")
+        set_name = data.get("set_name")
+        question = data.get("questions")
+
+        subject_file = os.path.join(ANSWERS_DIR, f"{subject_name}.json")
+
+        # Load existing subject data or initialize empty
+        if os.path.exists(subject_file):
+            with open(subject_file, "r") as file:
+                subject_data = json.load(file)
+        else:
+            subject_data = {}
+
+        # If set_name exists, return existing answers
+        for i in range(10):
+            print("Iteration", i)
+        print("set_name", set_name)
+        for i  in subject_data:
+            print("i", i)
+        if set_name in subject_data:
+            print("Set already exists")
+            print(subject_data[set_name])
+            return jsonify({
+                "status": "exists",
+                "message": f"Set '{set_name}' already exists",
+                "set": set_name,
+                "data": subject_data[set_name]
+            }), 200
+
+        # Generate answers
+        json_text = json.dumps(question, indent=2)
+        api = Answer_API()
+        response = api.generate(json_text)
+
+        # Store new set
+        subject_data[set_name] = response
+
+        with open(subject_file, "w") as file:
+            json.dump(subject_data, file, indent=2)
+        
+        print("Set created successfully")
+        print(response)
+
+        return jsonify({
+            "status": "success",
+            "message": f"Set '{set_name}' created successfully",
+            "set": set_name,
+            "data": response
+        }), 200
+
+    except Exception as e:
+        print(e)
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)

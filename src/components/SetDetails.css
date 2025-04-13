@@ -3,14 +3,13 @@
   max-width: 900px;
   margin: 40px auto;
   padding: 30px;
-  background: #ffffff;
+  background: linear-gradient(145deg, #ffffff, #f0f4f8);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   border-radius: 16px;
   text-align: center;
   position: relative;
   overflow: hidden;
   font-family: 'IBM Plex Mono', monospace;
-  background: linear-gradient(145deg, #ffffff, #f0f4f8);
   border: 1px solid rgba(231, 76, 60, 0.1);
 }
 
@@ -54,7 +53,7 @@
   background: linear-gradient(135deg, #f8f9fa, #e9ecef);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: left; /* Align section content to the left */
+  text-align: left;
 }
 
 .question-section:hover {
@@ -66,12 +65,11 @@
 .question-section h3 {
   font-size: 24px;
   color: #2d2d2d;
-  text-decoration: none;
   margin-bottom: 15px;
-  font-family: 'IBM Plex Mono', monospace;
   font-weight: 500;
   position: relative;
   display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
 }
 
 .question-section h3::after {
@@ -81,7 +79,7 @@
   height: 2px;
   background: linear-gradient(90deg, #ff6b6b, #e74c3c);
   bottom: -5px;
-  left: 0; /* Align underline to the left */
+  left: 0;
   border-radius: 2px;
   transition: width 0.3s ease;
 }
@@ -90,17 +88,19 @@
   width: 100%;
 }
 
-/* Question List */
+/* Question List Container */
 .question-list {
-  list-style-position: inside; /* Ensure numbers are inside the list item */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   padding: 0;
   margin: 0;
 }
 
-/* Question Item */
+/* Individual Question Item */
 .question-item {
   padding: 18px;
-  margin: 10px 0;
+  margin: 0;
   border-radius: 10px;
   font-size: 18px;
   font-weight: 500;
@@ -109,17 +109,18 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   font-family: 'IBM Plex Mono', monospace;
   position: relative;
-  overflow: hidden;
-  text-align: left; /* Align question text to the left */
+  overflow: visible;
+  text-align: left;
+  background-clip: padding-box;
 }
 
-/* Hover Effect for Questions */
+/* Hover Effect for Question Items */
 .question-item:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
-/* Add a subtle shine effect on hover */
+/* Shine Effect on Hover */
 .question-item::before {
   content: '';
   position: absolute;
@@ -133,6 +134,41 @@
 
 .question-item:hover::before {
   left: 100%;
+}
+
+/* Question Text and Number Layout */
+.question-text {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 18px;
+}
+
+.question-number {
+  font-weight: 600;
+  color: #2d2d2d;
+  flex-shrink: 0;
+}
+
+/* Answer Display on Hover */
+.answer-hover {
+  margin-top: 12px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #ffffff, #f5f7fa);
+  color: #2c3e50;
+  border-left: 4px solid #e74c3c;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: 'IBM Plex Mono', monospace;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  animation: fadeIn 0.3s ease-in-out;
+  white-space: pre-wrap;
+}
+
+/* Optional: Student color variation */
+body.student .answer-hover {
+  border-left-color: #3498db;
 }
 
 /* Loading & Not Found States */
